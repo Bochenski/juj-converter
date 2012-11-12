@@ -139,6 +139,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Running Costs done');
     });
+});
+
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
 
     conn.queryRaw("SELECT shop_code, stock_code, quantity_sold, quantity_in_stock FROM Shop_Stock_Sales_Totals", function (err, results) {
         if (err) {
@@ -159,7 +166,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Shop_Stock_Sales_Totals done');
     });
+});
 
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
     conn.queryRaw("SELECT description, weekly_running_cost FROM Shops", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -177,7 +190,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Shops done');
     });
+});
 
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
     conn.queryRaw("SELECT id, name, description, daily_cost FROM Staff", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -197,7 +216,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Staff done');
     });
+});
 
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
     conn.queryRaw("SELECT stock_code, description, retail_value, external_code, category, average_cost, quantity_for_average, is_average_cost_static, is_active FROM Stock", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -222,7 +247,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Stock done');
     });
+});
 
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
     conn.queryRaw("SELECT id, description FROM Stock_Category", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -240,7 +271,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Stock Category done');
     });
+});
 
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
     conn.queryRaw("SELECT date_of_entry, stock_code, quantity, shop_code, unit_price, transaction_id, include_in_average FROM Stock_Entry", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -262,6 +299,5 @@ sql.open(conn_str, function (err, conn) {
             })
         }
         console.log('Stock Entry done');
-        console.log('All Done');
     });
 });
