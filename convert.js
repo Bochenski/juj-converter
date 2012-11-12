@@ -58,8 +58,7 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('all done');
     });
-    conn.queryRaw("SELECT shop_code,date,shop_cost,staff_cost,staff_id,week_num,
-                    weekly_shop_cost FROM Running_Cost", function (err, results) {
+    conn.queryRaw("SELECT shop_code, date, shop_cost, staff_cost, staff_id, week_num, weekly_shop_cost FROM Running_Cost", function (err, results) {
         if (err) {
             console.log("Error running query!");
             return;
