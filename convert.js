@@ -24,10 +24,62 @@ var running_cost_schema = mongoose.Schema({
     staff_id:'String',
     week_num:'Number',
     weekly_shop_cost:'Number'
-})
+});
+
+var shop_stock_sales_totals_schema = mongoose.Schema({
+    shop_code:'String',
+    stock_code:'String',
+    quantiy_sold:'Number',
+    quantity_in_stock:'Number',
+});
+
+var shop_schema = mongoose.Schema({
+    description: 'String',
+    weekly_running_cost: 'String'
+});
+
+var staff_schema = mongoose.Schema({
+    tag: 'String',
+    name: 'String',
+    description: 'String',
+    daily_cost: 'Number'
+});
+
+var stock_schema = mongoose.Schema({
+    stock_code: 'String',
+    description: 'String',
+    retail_value: 'Number',
+    external_code: 'String',
+    category: 'String',
+    average_cost: 'Number',
+    quantity_for_average: 'Number',
+    is_average_cost_static: 'Boolean',
+    is_active: 'Boolean',
+});
+
+var stock_category_schema = mongoose.Schema({
+    tag: 'String',
+    description: 'String'
+});
+
+var stock_entry_schema = mongoose.Schema({
+    date_of_entry: 'Date',
+    stock_code: 'String',
+    quantity: 'Number',
+    shop_code: 'String',
+    unit_price: 'Number',
+    transaction_id: 'Number',
+    include_in_average: 'Boolean'
+});
 
 var Sale = db.model('Sale', sale_schema);
 var RunningCost = db.model('RunningCost', running_cost_schema);
+var ShopStockSalesTotals = db.model('ShopStockSalesTotals', shop_stock_sales_totals_schema);
+var Shop = db.model('Shop', shop_schema);
+var Staff = db.model('Staff', staff_schema);
+var Stock = db.model('Stock', stock_schema);
+var StockCategory = db.model('StockCategory', stock_category_schema);
+var StockEntry = db.model('StockEntry', stock_entry_schema);
 
 sql.open(conn_str, function (err, conn) {
     if (err) {
@@ -56,8 +108,9 @@ sql.open(conn_str, function (err, conn) {
                 }
             })
         }
-        console.log('all done');
+        console.log('Sales done');
     });
+
     conn.queryRaw("SELECT shop_code, date, shop_cost, staff_cost, staff_id, week_num, weekly_shop_cost FROM Running_Cost", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -78,6 +131,131 @@ sql.open(conn_str, function (err, conn) {
                 }
             })
         }
-        console.log('all done');
+        console.log('Running Costs done');
     });
+
+    conn.queryRaw("SELECT shop_code, stock_code, quantity_sold, quantity_in_stock FROM Shop_Stock_Sales_Totals", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var row = new ShopStockSalesTotals({shop_code: results.rows[i][0], 
+                                stock_code: results.rows[i][1],
+                                quantity_sold: results.rows[i][2],
+                                quantity_in_stock: results.rows[i][3]
+                            });
+            row.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('Shop_Stock_Sales_Totals done');
+    });
+
+    conn.queryRaw("SELECT description, weekly_running_cost FROM Shops", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var row = new Shop({description: results.rows[i][0], 
+                                weekly_running_cost: results.rows[i][1]
+                            });
+            row.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('Shops done');
+    });
+
+    conn.queryRaw("SELECT id, name, description, daily_cost FROM Staff", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var row = new Staff({tag: results.rows[i][0], 
+                                name: results.rows[i][1],
+                                description: results.rows[i][2],
+                                daily_cost: results.rows[i][3]
+                            });
+            row.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('Staff done');
+    });
+
+    conn.queryRaw("SELECT stock_code, description, retail_value, external_code, category, average_cost, quantity_for_average, is_average_cost_static, is_active FROM Stock", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var row = new RunningCost({stock_code: results.rows[i][0], 
+                                description: results.rows[i][1],
+                                retail_value: results.rows[i][2],
+                                external_code: results.rows[i][3],
+                                category: results.rows[i][4],
+                                average_cost: results.rows[i][5],
+                                quantity_for_average: results.rows[i][6],
+                                is_average_cost_static: results.rows[i][7],
+                                is_active: results.rows[i][8]
+                            });
+            row.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('Stock done');
+    });
+
+    conn.queryRaw("SELECT id, description FROM Stock_Category", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var row = new Shop({tag: results.rows[i][0], 
+                                description: results.rows[i][1]
+                            });
+            row.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('Stock Category done');
+    });
+
+    conn.queryRaw("SELECT date_of_entry, stock_code, quantity, shop_code, unit_price, transaction_id, include_in_average FROM Stock_Entry", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var row = new RunningCost({date_of_entry: results.rows[i][0], 
+                                stock_code: results.rows[i][1],
+                                quantity: results.rows[i][2],
+                                shop_code: results.rows[i][3],
+                                unit_price: results.rows[i][4],
+                                transaction_id: results.rows[i][5],
+                                include_in_average: results.rows[i][6]
+                            });
+            row.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('Stock Entry done');
+    });
+    console.log('All Done');
 });
