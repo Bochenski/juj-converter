@@ -229,7 +229,7 @@ sql.open(conn_str, function (err, conn) {
             return;
         }
         for (var i = 0; i < results.rows.length; i++) {
-            var row = new RunningCost({stock_code: results.rows[i][0], 
+            var row = new Stock({stock_code: results.rows[i][0], 
                                 description: results.rows[i][1],
                                 retail_value: results.rows[i][2],
                                 external_code: results.rows[i][3],
@@ -260,7 +260,7 @@ sql.open(conn_str, function (err, conn) {
             return;
         }
         for (var i = 0; i < results.rows.length; i++) {
-            var row = new Shop({tag: results.rows[i][0], 
+            var row = new StockCategory({tag: results.rows[i][0], 
                                 description: results.rows[i][1]
                             });
             row.save(function (err) {
@@ -284,7 +284,7 @@ sql.open(conn_str, function (err, conn) {
             return;
         }
         for (var i = 0; i < results.rows.length; i++) {
-            var row = new RunningCost({date_of_entry: results.rows[i][0], 
+            var row = new StockEntry({date_of_entry: results.rows[i][0], 
                                 stock_code: results.rows[i][1],
                                 quantity: results.rows[i][2],
                                 shop_code: results.rows[i][3],
