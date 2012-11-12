@@ -110,7 +110,13 @@ sql.open(conn_str, function (err, conn) {
         }
         console.log('Sales done');
     });
+});
 
+sql.open(conn_str, function (err, conn) {
+    if (err) {
+        console.log("Error opening the connection!");
+        return;
+    }
     conn.queryRaw("SELECT shop_code, date, shop_cost, staff_cost, staff_id, week_num, weekly_shop_cost FROM Running_Cost", function (err, results) {
         if (err) {
             console.log("Error running query!");
@@ -256,6 +262,6 @@ sql.open(conn_str, function (err, conn) {
             })
         }
         console.log('Stock Entry done');
+        console.log('All Done');
     });
-    console.log('All Done');
 });
