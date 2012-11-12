@@ -1,6 +1,7 @@
 // Query with explicit connection
 var sql = require('msnodesql');
 var mongoose = require('mongoose');
+var db = mongoose.createConnection('localhost', 'juj');
 
 var conn_str = "Driver={SQL Server Native Client 11.0};Server=(local);Database=JUJ;Trusted_Connection={Yes}";
 
