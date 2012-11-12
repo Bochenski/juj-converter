@@ -32,14 +32,14 @@ sql.open(conn_str, function (err, conn) {
         for (var i = 0; i < results.rows.length; i++) {
             var sale = new Sale({transaction_id: results.rows[i][0], 
                                 sale_price: results.rows[i][1],
-                                date_of_sale: results.rows[i][2]},
+                                date_of_sale: results.rows[i][2],
                                 stock_code: results.rows[i][3],
                                 quantity: results.rows[i][4],
                                 shop_code: results.rows[i][5],
                                 transaction_type: results.rows[i][6],
                                 cost_price: results.rows[i][7],
                                 vat_rate: results.rows[i][8],
-                                week_num: results.rows[i][9]);
+                                week_num: results.rows[i][9]});
             sale.save(function (err) {
                 if (err) {
                     console.log('there was an error');
