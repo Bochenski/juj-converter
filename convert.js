@@ -16,8 +16,18 @@ var sale_schema = mongoose.Schema({transaction_id: 'String',
                                     vat_rate:'Number',
                                     week_num:'Number'});
 
-var Sale = db.model('Sale', sale_schema);
+var running_cost_schema = mongoose.Schema({
+    shop_code:'String',
+    date:'Date',
+    shop_cost:'Number',
+    staff_cost:'Number',
+    staff_id:'String',
+    week_num:'Number',
+    weekly_shop_cost:'Number'
+})
 
+var Sale = db.model('Sale', sale_schema);
+var RunningCost = db.model('RunningCost', running_cost_schema);
 
 sql.open(conn_str, function (err, conn) {
     if (err) {
@@ -41,6 +51,29 @@ sql.open(conn_str, function (err, conn) {
                                 vat_rate: results.rows[i][8],
                                 week_num: results.rows[i][9]});
             sale.save(function (err) {
+                if (err) {
+                    console.log('there was an error');
+                }
+            })
+        }
+        console.log('all done');
+    });
+    conn.queryRaw("SELECT shop_code,date,shop_cost,staff_cost,staff_id,week_num,
+                    weekly_shop_cost FROM Running_Cost", function (err, results) {
+        if (err) {
+            console.log("Error running query!");
+            return;
+        }
+        for (var i = 0; i < results.rows.length; i++) {
+            var cost = new RunningCost({shop_code: results.rows[i][0], 
+                                date: results.rows[i][1],
+                                shop_cost: results.rows[i][2],
+                                staff_cost: results.rows[i][3],
+                                staff_id: results.rows[i][4],
+                                week_num: results.rows[i][5],
+                                weekly_shop_cost: results.rows[i][6]
+                            });
+            cost.save(function (err) {
                 if (err) {
                     console.log('there was an error');
                 }
