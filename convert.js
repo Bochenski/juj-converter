@@ -5,7 +5,7 @@ var db = mongoose.createConnection('localhost', 'juj');
 
 var conn_str = "Driver={SQL Server Native Client 11.0};Server=(local);Database=JUJ;Trusted_Connection={Yes}";
 
-var sale_schema = mongoose.Schema({transaction_id: 'String', 
+var sale_schema = mongoose.Schema({transaction_id: 'Number', 
                                     sale_price: 'Number', 
                                     date_of_sale: 'Date',
                                     stock_code:'String',
